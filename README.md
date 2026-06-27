@@ -1,8 +1,9 @@
 # mem0-local — Claude Code plugin marketplace
 
-Hosts the **mem0** plugin: automatic long-term memory for Claude Code, backed by a
-self-hosted mem0 server. Recalls relevant memories and captures durable facts on every
-prompt, via a bundled `UserPromptSubmit` hook. Per-project namespaces; secret-free repo.
+Hosts the **mem0** plugin: long-term memory for Claude Code, backed by a self-hosted mem0 server.
+A bundled `UserPromptSubmit` hook **auto-recalls** relevant memories every prompt, and an **MCP
+server** gives Claude `search_memory` / `add_memory` tools so it **writes durable facts on its own
+judgment** (auto-capture is off by default). Per-project namespaces; secret-free repo.
 
 ## Install (any machine)
 ```bash
@@ -44,6 +45,13 @@ echo "my-project-id" > <repo>/.mem0-user      # or: MEM0_USER_ID  · or: .claude
 Resolution: `$MEM0_USER_ID` env → root pin file → auto-derive. An empty / `off` / `disabled` / `-`
 pin file disables mem0 for that repo.
 
+## How memory is read & written
+- **Read (auto):** the hook searches mem0 every prompt and injects matches as context — Claude always has relevant memories without asking.
+- **Write (agentic):** Claude calls the MCP `add_memory` tool when it judges something is durable & new. The blunt auto-capture is OFF by default (`MEM0_CAPTURE=0`) → clean store, no meta-noise. Set `MEM0_CAPTURE=1` to also auto-save every prompt.
+
+## MCP tools (Claude-callable)
+`search_memory(query)` · `add_memory(text)` · `list_memories()` — exposed by `mcp/server.js` (zero-dependency Node, reuses `config.sh` for host/key/per-project namespace).
+
 ## Commands
 `/mem0-status` · `/mem0-recall <query>` · `/mem0-purge`
 
@@ -53,7 +61,9 @@ mem0-plugin/
 ├── .claude-plugin/marketplace.json   # this marketplace
 └── plugins/mem0/
     ├── .claude-plugin/plugin.json
-    ├── hooks/hooks.json              # UserPromptSubmit -> scripts/mem0-prompt.sh
+    ├── hooks/hooks.json              # UserPromptSubmit -> scripts/mem0-prompt.sh (auto-recall)
+    ├── .mcp.json                     # registers the mem0 MCP server (agentic read/write tools)
+    ├── mcp/server.js                 # zero-dep MCP server: search_memory / add_memory / list_memories
     ├── scripts/{config.sh,mem0-prompt.sh}
     └── commands/{mem0-status,mem0-recall,mem0-purge}.md
 ```

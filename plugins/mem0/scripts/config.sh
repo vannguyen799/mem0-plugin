@@ -11,9 +11,10 @@ export MEM0_API_KEY="${MEM0_API_KEY:-}"   # from env (~/.bashrc), config.local f
 
 # Behaviour / kill switches
 export MEM0_ENABLED="${MEM0_ENABLED:-1}"   # 0 = fully off: NO network calls at all (true local-only kill switch)
-export MEM0_CAPTURE="${MEM0_CAPTURE:-1}"   # 1 = also auto-save prompts (write). NOTE: recall (/search) still sends
-                                 #     the prompt to the remote server every turn regardless of this flag — set
-                                 #     MEM0_ENABLED=0 (or remove the hook) if you need zero egress.
+export MEM0_CAPTURE="${MEM0_CAPTURE:-0}"   # 0 = agentic-writes-only: the hook does NOT auto-save prompts; Claude
+                                 #     writes durable facts via the MCP add_memory tool when it decides. Set 1 to
+                                 #     ALSO auto-capture every prompt (noisier). Recall (/search) runs either way;
+                                 #     set MEM0_ENABLED=0 (or remove the hook) for zero egress.
 export MEM0_REDACT="${MEM0_REDACT:-1}"     # 1 = best-effort scrub obvious secrets (tokens, URL creds) before any send
 export MEM0_SKIP_SELF="${MEM0_SKIP_SELF:-1}"  # 1 = don't CAPTURE prompts about mem0 itself (avoids meta-noise); recall unaffected
 export MEM0_RECALL_LIMIT="${MEM0_RECALL_LIMIT:-6}"   # max memories injected per prompt
