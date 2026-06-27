@@ -17,6 +17,7 @@ export MEM0_CAPTURE="${MEM0_CAPTURE:-0}"   # 0 = agentic-writes-only: the hook d
                                  #     set MEM0_ENABLED=0 (or remove the hook) for zero egress.
 export MEM0_REDACT="${MEM0_REDACT:-1}"     # 1 = best-effort scrub obvious secrets (tokens, URL creds) before any send
 export MEM0_SKIP_SELF="${MEM0_SKIP_SELF:-1}"  # 1 = don't CAPTURE prompts about mem0 itself (avoids meta-noise); recall unaffected
+export MEM0_INSTRUCT="${MEM0_INSTRUCT:-1}"    # 1 = each turn, nudge Claude to call add_memory for durable new facts (agentic writes)
 export MEM0_RECALL_LIMIT="${MEM0_RECALL_LIMIT:-6}"   # max memories injected per prompt
 export MEM0_MIN_SCORE="${MEM0_MIN_SCORE:-0.5}"       # drop matches below this score. NOTE: this embedding model floors
                                  #     ~0.39 even for unrelated text, so 0.3 filtered nothing; ~0.5 keeps on-topic.
