@@ -1,0 +1,4 @@
+# Never commit machine-local secrets (the plugin reads ~/.claude/mem0/config.local at runtime,
+# which lives outside this repo — but guard against a stray copy here too).
+config.local
+*.local

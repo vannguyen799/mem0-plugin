@@ -1,0 +1,14 @@
+{
+  "name": "mem0-local",
+  "owner": {
+    "name": "vannguyen799"
+  },
+  "description": "Local marketplace hosting the mem0 auto-memory plugin.",
+  "plugins": [
+    {
+      "name": "mem0",
+      "source": "./plugins/mem0",
+      "description": "Automatic long-term memory for Claude Code (mem0-backed)."
+    }
+  ]
+}
