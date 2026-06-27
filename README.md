@@ -7,22 +7,19 @@ judgment** (auto-capture is off by default). Per-project namespaces; secret-free
 
 ## Install (any machine)
 ```bash
-# from a local checkout:
-/plugin marketplace add /home/user/.claude/mem0-plugin
-/plugin install mem0@mem0-local
-
-# or, once pushed to GitHub:
-/plugin marketplace add vannguyen799/mem0-plugin
+/plugin marketplace add vannguyen799/mem0-plugin     # (or a local path)
 /plugin install mem0@mem0-local
 ```
-Then set your key (and optionally a custom host) in your shell env — add to `~/.bashrc`:
+Then **configure credentials** with the setup command (recommended — works regardless of how Claude
+Code was launched; no restart needed):
 ```bash
-export MEM0_API_KEY="YOUR_KEY"                       # required
-export MEM0_HOST="https://your-mem0-host"            # optional — defaults to the main mem0 server
+/mem0-setup YOUR_API_KEY                              # host defaults to the main mem0 server
+/mem0-setup YOUR_API_KEY https://your-mem0-host       # custom host
 ```
-`source ~/.bashrc`, then restart Claude Code. Both are env-customizable per machine.
-Headless/cron shells that don't source `~/.bashrc` can instead put the same `export` lines in
-`~/.claude/mem0/config.local` (sourced only when the env var is unset). No key → hook no-ops (safe).
+It writes `~/.claude/mem0/config.local` (chmod 600), which the hook + MCP server read on every call.
+Alternatively, export `MEM0_API_KEY` / `MEM0_HOST` in your shell env — but note a GUI/non-login launch
+may not pass `~/.bashrc` to the plugin's hook/MCP processes, so `/mem0-setup` is the reliable path.
+No key → mem0 safely no-ops.
 
 ## Auto-enable for a project / team
 Commit to a repo's `.claude/settings.json`:
@@ -53,7 +50,7 @@ pin file disables mem0 for that repo.
 `search_memory(query)` · `add_memory(text)` · `list_memories()` — exposed by `mcp/server.js` (zero-dependency Node, reuses `config.sh` for host/key/per-project namespace).
 
 ## Commands
-`/mem0-status` · `/mem0-recall <query>` · `/mem0-purge`
+`/mem0-setup <key> [host]` · `/mem0-status` · `/mem0-recall <query>` · `/mem0-purge`
 
 ## Layout
 ```
