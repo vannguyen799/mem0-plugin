@@ -34,6 +34,16 @@ Commit to a repo's `.claude/settings.json`:
 }
 ```
 
+## Per-project id
+Each repo's `user_id` (memory namespace) is derived automatically (`MEM0_REPO_KEY`, default
+`readable`): `package.json` name → `owner__repo` → folder name. **To pin a fixed id**, drop a
+file at the project root whose contents are the id:
+```bash
+echo "my-project-id" > <repo>/.mem0-user      # or: MEM0_USER_ID  · or: .claude/mem0-user
+```
+Resolution: `$MEM0_USER_ID` env → root pin file → auto-derive. An empty / `off` / `disabled` / `-`
+pin file disables mem0 for that repo.
+
 ## Commands
 `/mem0-status` · `/mem0-recall <query>` · `/mem0-purge`
 
@@ -50,4 +60,4 @@ mem0-plugin/
 
 Settings (env-overridable, defaults in `scripts/config.sh`): `MEM0_ENABLED`, `MEM0_CAPTURE`,
 `MEM0_REDACT`, `MEM0_SKIP_SELF`, `MEM0_REPO_KEY` (default `readable`), `MEM0_MIN_SCORE`,
-`MEM0_RECALL_LIMIT`. The API key/host live only in `~/.claude/mem0/config.local`.
+`MEM0_RECALL_LIMIT`. The API key/host come from the env (`~/.bashrc`), never the repo.

@@ -102,7 +102,8 @@ _mem0_github_id() {                  # -> numeric GitHub repo id, via gh (host-a
 # Per-repo user_id resolution. Most specific wins:
 #   1. $MEM0_USER_ID env var               (forced override; NOTE: case-sensitive — mem0 treats
 #                                            app.zynalgo.com and app.ZynAlgo.com as DIFFERENT namespaces)
-#   2. <repo-root>/.claude/mem0-user file  (explicit human pin — also rename-safe; activates the hook even
+#   2. pin file (first found): <repo-root>/.mem0-user  ·  <repo-root>/MEM0_USER_ID  ·  <repo-root>/.claude/mem0-user
+#                                            (explicit human pin — file content IS the id; rename-safe; works even
 #                                            outside git. Content "off"/"disabled"/"-"/empty => disable THIS repo.)
 #   3. AUTO (MEM0_AUTODERIVE=1) per MEM0_REPO_KEY:
 #        3a. <gitdir>/mem0-user-id cache    (memoized auto-derived GitHub id; only consulted when auto is on)
@@ -114,11 +115,15 @@ resolve_user_id() {
 
   local root; root="$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)" || root=""
   local base="${root:-$cwd}"
-  if [ -f "$base/.claude/mem0-user" ]; then
-    local pin; pin="$(tr -d '[:space:]' < "$base/.claude/mem0-user")"
+  # Explicit per-repo pin file (checked in order): a project-ROOT file ".mem0-user" / "MEM0_USER_ID",
+  # else ".claude/mem0-user". File content IS the user_id. Empty/"off"/"disabled"/"-" disables this repo.
+  local pinfile pin
+  for pinfile in "$base/.mem0-user" "$base/MEM0_USER_ID" "$base/.claude/mem0-user"; do
+    [ -f "$pinfile" ] || continue
+    pin="$(tr -d '[:space:]' < "$pinfile")"
     case "$pin" in ''|off|disabled|-) printf ''; return;; esac   # explicit per-repo opt-out
     printf '%s' "$pin"; return
-  fi
+  done
 
   [ "${MEM0_AUTODERIVE:-1}" = "1" ] && [ -n "$root" ] || { printf ''; return; }
 
