@@ -9,6 +9,17 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/mem0-stop.sh",
+            "timeout": 30
+          }
+        ]
+      }
     ]
   }
 }

@@ -11,10 +11,14 @@ export MEM0_API_KEY="${MEM0_API_KEY:-}"   # from env (~/.bashrc), config.local f
 
 # Behaviour / kill switches
 export MEM0_ENABLED="${MEM0_ENABLED:-1}"   # 0 = fully off: NO network calls at all (true local-only kill switch)
-export MEM0_CAPTURE="${MEM0_CAPTURE:-0}"   # 0 = agentic-writes-only: the hook does NOT auto-save prompts; Claude
-                                 #     writes durable facts via the MCP add_memory tool when it decides. Set 1 to
-                                 #     ALSO auto-capture every prompt (noisier). Recall (/search) runs either way;
-                                 #     set MEM0_ENABLED=0 (or remove the hook) for zero egress.
+export MEM0_CAPTURE="${MEM0_CAPTURE:-1}"   # 1 = ALSO auto-capture every prompt (server LLM extracts durable facts).
+                                 #     0 = agentic-writes-only: the hook does NOT auto-save; Claude writes durable
+                                 #     facts via the MCP add_memory tool when it decides. Recall (/search) runs either
+                                 #     way; set MEM0_ENABLED=0 (or remove the hook) for zero egress.
+# End-of-session summary: on Stop, capture a compact session digest (task + outcome + files touched) so durable
+# facts land even when nothing was captured per-prompt. The server's LLM extracts the lasting facts. Toggle off with 0.
+export MEM0_SESSION_SUMMARY="${MEM0_SESSION_SUMMARY:-1}"
+export MEM0_SUMMARY_MAX_CHARS="${MEM0_SUMMARY_MAX_CHARS:-2000}"  # cap on the outcome text posted at session end
 export MEM0_REDACT="${MEM0_REDACT:-1}"     # 1 = best-effort scrub obvious secrets (tokens, URL creds) before any send
 export MEM0_SKIP_SELF="${MEM0_SKIP_SELF:-1}"  # 1 = don't CAPTURE prompts about mem0 itself (avoids meta-noise); recall unaffected
 export MEM0_INSTRUCT="${MEM0_INSTRUCT:-1}"    # 1 = each turn, nudge Claude to call add_memory for durable new facts (agentic writes)
