@@ -1,7 +1,7 @@
 {
   "name": "mem0",
   "description": "Automatic long-term memory for Claude Code via a self-hosted mem0 server: primes each session with a memory digest, recalls relevant memories every prompt, writes durable facts agentically (add_memory), and writes a session summary on exit. Per-project namespaces, secret-free (key supplied per machine).",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "author": {
     "name": "vannguyen799"
   },

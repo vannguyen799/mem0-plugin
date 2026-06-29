@@ -31,5 +31,5 @@ curl -sS --max-time 10 -X DELETE -K <(keycfg) "$host/memories?user_id=$probe" >/
   && echo "cleanup      = ok" || echo "cleanup      = (left probe; delete manually)"
 ```
 
-If `key=MISSING`, tell the user to run `/mem0-setup YOUR_API_KEY [host]`. If read/write FAIL, surface the
+If `key=MISSING`, tell the user to run `/mem0:setup YOUR_API_KEY [host]`. If read/write FAIL, surface the
 error text and check the host is reachable and the API key is valid.

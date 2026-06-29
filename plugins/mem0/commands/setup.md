@@ -11,7 +11,7 @@ does not depend on how Claude Code was launched (unlike `~/.bashrc`, which GUI/n
 set -- $ARGUMENTS
 KEY="${1:-}"; HOST="${2:-https://mem0.qzzprivate.qzz.io}"
 if [ -z "$KEY" ]; then
-  echo "Usage: /mem0-setup <api-key> [host-url]"; exit 0
+  echo "Usage: /mem0:setup <api-key> [host-url]"; exit 0
 fi
 case "$HOST" in https://*) ;; *) echo "host must be https://..."; exit 0;; esac
 mkdir -p ~/.claude/mem0
@@ -21,4 +21,4 @@ echo "mem0 configured -> host=$HOST  key=***  (~/.claude/mem0/config.local, chmo
 ```
 
 Then tell the user mem0 is ready to use immediately — no restart needed, since the hook and MCP
-tools re-read config on each call. Suggest they run `/mem0-status` to confirm.
+tools re-read config on each call. Suggest they run `/mem0:status` to confirm.

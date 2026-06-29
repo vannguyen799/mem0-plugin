@@ -14,12 +14,12 @@ Per-project namespaces; secret-free repo.
 Then **configure credentials** with the setup command (recommended — works regardless of how Claude
 Code was launched; no restart needed):
 ```bash
-/mem0-setup YOUR_API_KEY                              # host defaults to the main mem0 server
-/mem0-setup YOUR_API_KEY https://your-mem0-host       # custom host
+/mem0:setup YOUR_API_KEY                              # host defaults to the main mem0 server
+/mem0:setup YOUR_API_KEY https://your-mem0-host       # custom host
 ```
 It writes `~/.claude/mem0/config.local` (chmod 600), which the hook + MCP server read on every call.
 Alternatively, export `MEM0_API_KEY` / `MEM0_HOST` in your shell env — but note a GUI/non-login launch
-may not pass `~/.bashrc` to the plugin's hook/MCP processes, so `/mem0-setup` is the reliable path.
+may not pass `~/.bashrc` to the plugin's hook/MCP processes, so `/mem0:setup` is the reliable path.
 No key → mem0 safely no-ops.
 
 ## Auto-enable for a project / team
@@ -54,7 +54,7 @@ pin file disables mem0 for that repo.
 `search_memory(query)` · `add_memory(text)` · `list_memories()` — exposed by `mcp/server.js` (zero-dependency Node, reuses `config.sh` for host/key/per-project namespace).
 
 ## Commands
-`/mem0-setup <key> [host]` · `/mem0-status` · `/mem0-health` · `/mem0-recall <query>` · `/mem0-purge`
+`/mem0:setup <key> [host]` · `/mem0:status` · `/mem0:health` · `/mem0:recall <query>` · `/mem0:purge`
 
 ## Layout
 ```
@@ -66,7 +66,7 @@ mem0-plugin/
     ├── .mcp.json                     # registers the mem0 MCP server (agentic read/write tools)
     ├── mcp/server.js                 # zero-dep MCP server: search_memory / add_memory / list_memories
     ├── scripts/{config.sh,mem0-session.sh,mem0-prompt.sh,mem0-stop.sh}
-    └── commands/{mem0-setup,mem0-status,mem0-health,mem0-recall,mem0-purge}.md
+    └── commands/{setup,status,health,recall,purge}.md   # invoked as /mem0:setup, /mem0:status, …
 ```
 
 Settings (env-overridable, defaults in `scripts/config.sh`): `MEM0_ENABLED`, `MEM0_CAPTURE` (default `0`),
