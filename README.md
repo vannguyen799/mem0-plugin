@@ -54,7 +54,8 @@ pin file disables mem0 for that repo.
 `search_memory(query)` · `add_memory(text)` · `list_memories()` — exposed by `mcp/server.js` (zero-dependency Node, reuses `config.sh` for host/key/per-project namespace).
 
 ## Commands
-`/mem0:setup <key> [host]` · `/mem0:status` · `/mem0:health` · `/mem0:recall <query>` · `/mem0:purge`
+`/mem0:setup <key> [host]` · `/mem0:status` · `/mem0:health` · `/mem0:recall <query>` ·
+`/mem0:forget <query>` (selective delete) · `/mem0:update <fact>` (reconcile + delete conflicts) · `/mem0:purge`
 
 ## Layout
 ```
@@ -66,7 +67,7 @@ mem0-plugin/
     ├── .mcp.json                     # registers the mem0 MCP server (agentic read/write tools)
     ├── mcp/server.js                 # zero-dep MCP server: search_memory / add_memory / list_memories
     ├── scripts/{config.sh,mem0-session.sh,mem0-prompt.sh,mem0-stop.sh}
-    └── commands/{setup,status,health,recall,purge}.md   # invoked as /mem0:setup, /mem0:status, …
+    └── commands/{setup,status,health,recall,forget,update,purge}.md   # invoked as /mem0:setup, /mem0:status, …
 ```
 
 Settings (env-overridable, defaults in `scripts/config.sh`): `MEM0_ENABLED`, `MEM0_CAPTURE` (default `0`),
